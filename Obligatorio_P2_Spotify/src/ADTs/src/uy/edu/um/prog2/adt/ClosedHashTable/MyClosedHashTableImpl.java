@@ -28,20 +28,20 @@ public class MyClosedHashTableImpl implements MyClosedHashTable {
                 if (array[i] == null) {
                     ClosedHashNode newNode = new ClosedHashNode(keyCountry,innerArraylength);
                     this.array[i] = newNode;
-                    this.array[i].getInnerArray()[rankSong] = keySong;
+                    this.array[i].getInnerArray()[rankSong-1] = keySong;
                 }
             }
             for (int i = 0; i < index; i++) {
                 if (array[i] == null) {
                     ClosedHashNode newNode = new ClosedHashNode(keyCountry,innerArraylength);
                     this.array[i] = newNode;
-                    this.array[i].getInnerArray()[rankSong] = keySong;
+                    this.array[i].getInnerArray()[rankSong-1] = keySong;
                 }
             }
-        } else if (this.array[position].containsSong(rankSong)) {
+        } else if (this.array[position].containsSong(rankSong-1)) {
             throw new ElementAlreadyInHash();
         } else {
-            this.array[position].getInnerArray()[rankSong] = keySong;
+            this.array[position].getInnerArray()[rankSong-1] = keySong;
         }
     }
 

@@ -7,6 +7,17 @@
 //
 //
 public class Main {
+    public static void main(String[] args) {
+        Menu menu = new Menu();
+        SpotifyAppImpl spoti = new SpotifyAppImpl();
+        spoti.loadData();
+        menu.showMenu(spoti);
+
+
+    }
+
+
+
 //    SpotifyAppImpl main = new SpotifyAppImpl();
 //    main.
 //    FileWriter writer = new FileWriter("C:/Users/Joaco/Desktop/CSV_labP2/PruebaCSV19.txt");

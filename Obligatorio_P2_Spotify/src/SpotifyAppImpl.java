@@ -23,33 +23,38 @@ public class SpotifyAppImpl {
 
 
     //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"     Mi URL pruebas
-    public void loadData(String url) {
+    public void loadData() {
         try {
-            Scanner scanner = new Scanner(new File(url));
+            int count = 0;
+            Scanner scanner = new Scanner(new File("C:/Users/Joaco/Desktop/universal_top_spotify_songs33.csv"));
             scanner.useDelimiter("\n");
 
             boolean test = false;
             while (scanner.hasNext()) {
+                count++;
+                System.out.println(count);
                 String line = scanner.next();
                 if (test) {
 
                     //CREAR CANCION --------------------------------------------------
 
                     String[] data = line.split("\",\"");
-                    if (data[7] == null || data[7].equals("") || data[7].equals(" ") || data[7].equals("   ")) {
-                        data[7] = "global";
+                    if (data[6] == null || data[6].equals("")) {
+                        data[6] = "global";
                     }
                     String songKey = data[0];
                     data[0] = songKey.substring(1);
                     String[] artists = data[2].split(",");
+                    data[23] = data[23].replace(".","");
                     int tempo = Integer.parseInt(data[23]);
                     Song newSong = new Song(data[1], data[0], artists, tempo);
 
                     //INSERTAR CANCION AL MAIN HASH ----------------------------------
-
-                    this.songsHash.put(newSong.getSpotifyId(), newSong);
                     int ranking = Integer.parseInt(data[3]);
-
+                    try {
+                        this.songsHash.put(newSong.getSpotifyId(), newSong);
+                    } catch (ElementAlreadyInHash ignore) {
+                    }
                     // INSERTAMOS KEY DE CANCION EN EL DATECOUNTRYHASH ----------------
 
                     // Caso que no existe la fecha

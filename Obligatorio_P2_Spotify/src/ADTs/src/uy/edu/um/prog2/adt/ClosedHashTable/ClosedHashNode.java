@@ -30,7 +30,7 @@ public class ClosedHashNode {
 
 
     public void putSong(String keySong, int rankSong) throws ElementAlreadyInHash {
-        if (this.containsSong(rankSong)) {
+        if (this.containsSong(rankSong-1)) {
             throw new ElementAlreadyInHash();
         } else {
             this.innerArray[rankSong - 1] = keySong;
@@ -38,7 +38,7 @@ public class ClosedHashNode {
     }
 
     public boolean containsSong(int rankSong) {
-        return (innerArray[rankSong] == null);
+        return (innerArray[rankSong-1] == null);
     }
 
     public String[] getInnerArray() {
