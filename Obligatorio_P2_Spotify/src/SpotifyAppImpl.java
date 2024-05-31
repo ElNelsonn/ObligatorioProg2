@@ -61,7 +61,6 @@ public class SpotifyAppImpl {
 
 
 
-
                 } else {
                     test = true;
                 }
