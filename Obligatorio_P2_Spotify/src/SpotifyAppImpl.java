@@ -9,20 +9,21 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class SpotifyAppImpl {
-    private MyHashTable<String,Song> songsHash;
+    private MyHashTable<String, Song> songsHash;
     private MyHashTable<String, MyClosedHashTable> dateCountryHash;
 
-    public SpotifyAppImpl(){
+    public SpotifyAppImpl() {
         songsHash = new MyHashTableImpl<>(14000); //cant songs
-        dateCountryHash =  new MyHashTableImpl<>(360); //tam fechas
+        dateCountryHash = new MyHashTableImpl<>(360); //tam fechas
     }
 
 
     //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"     Mi URL pruebas
-    public void loadData(String url){
+    public void loadData(String url) {
         try {
             Scanner scanner = new Scanner(new File(url));
             scanner.useDelimiter("\n");
@@ -35,6 +36,9 @@ public class SpotifyAppImpl {
                     //CREAR CANCION --------------------------------------------------
 
                     String[] data = line.split("\",\"");
+                    if (data[7] == null || data[7].equals("") || data[7].equals(" ") || data[7].equals("   ")) {
+                        data[7] = "global";
+                    }
                     String songKey = data[0];
                     data[0] = songKey.substring(1);
                     String[] artists = data[2].split(",");
@@ -48,17 +52,16 @@ public class SpotifyAppImpl {
 
                     // INSERTAMOS KEY DE CANCION EN EL DATECOUNTRYHASH ----------------
 
-                        // Caso que no existe la fecha
+                    // Caso que no existe la fecha
                     int dateIndex = dateCountryHash.contains(data[7]);
                     if (dateIndex == -1) {
-                        MyClosedHashTable countryHash = new MyClosedHashTableImpl(100,50);
-                        dateCountryHash.put(data[7],countryHash);
-                        dateCountryHash.get(data[7]).put(data[6],data[0],ranking);
+                        MyClosedHashTable countryHash = new MyClosedHashTableImpl(100, 50);
+                        dateCountryHash.put(data[7], countryHash);
+                        dateCountryHash.get(data[7]).put(data[6], data[0], ranking);
                     } else {
                         // Caso que existe la fecha pero no pais
-                        dateCountryHash.get(data[7]).put(data[6],data[0],ranking);
+                        dateCountryHash.get(data[7]).put(data[6], data[0], ranking);
                     }
-
 
 
                 } else {
@@ -81,12 +84,17 @@ public class SpotifyAppImpl {
         while (estado) {
             String[] keySongs = new String[10];
             try {
-                this.dateCountryHash.get(fechaRanking).getRankingArray(pais);
+                String[] ranking = this.dateCountryHash.get(fechaRanking).getRankingArray(pais);
+                System.out.println("Ranking " + fechaRanking + " " + pais + ":");
+                for (int i = 0; i < 10; i++) {
+                    Song song = songsHash.get(ranking[i]);
+                    String artists = String.join(", ", song.getArtists());
+                    System.out.println("    " + (i + 1) + ") " + "Name: " + song.getName() + " Artists: " + artists);
 
+                }
 
             } catch (ElementNotFound e) {
                 System.out.println("País o fecha invalida.");
-                estado =
             }
 
 
@@ -94,27 +102,25 @@ public class SpotifyAppImpl {
     }
 
 
-    public void infoErroneTomeUnaDecsion() {
-        Scanner scanner1 = new Scanner(System.in);
-        String opcion = scanner1.nextLine();
-
-        switch (opcion) {
-            case 1:
-                System.out.println("Has elegido la opción 1");
-                // Lógica para la opción 1
-                break;
-            case 2:
-                System.out.println("Has elegido la opción 2");
-                // Lógica para la opción 2
-                break;
-            case 3:
-
-
-    }
-
-
-
+//    public void infoErroneaTomeUnaDecsion() {
+//        Scanner scanner1 = new Scanner(System.in);
+//        String opcion = scanner1.nextLine();
+//
+//        switch (opcion) {
+//            case 1:
+//                System.out.println("Has elegido la opción 1");
+//                // Lógica para la opción 1
+//                break;
+//            case 2:
+//                System.out.println("Has elegido la opción 2");
+//                // Lógica para la opción 2
+//                break;
+//            case 3:
+//
+//        }
+//
+//
+//    }
 
 
 }
-

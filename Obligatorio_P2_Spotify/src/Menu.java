@@ -10,9 +10,10 @@ public class Menu {
     private String b = "\u001B[0m";
 
 
-    public void showMenu() {
+    public void showMenu(SpotifyAppImpl app) {
         Scanner scanner = new Scanner(System.in);
         int opcion;
+
 
         while (this.prendido) {
             System.out.println(fGris + "                                                                                                                        " + b);
@@ -26,7 +27,6 @@ public class Menu {
             System.out.println(fGris + negro +  "               5) Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.         " + b);
             System.out.println(fGris + negro +  "               6) Finalizar programa                                                                                    " + b);
             System.out.println(fGris + "                                                                                                                        " + b);
-
 
 
             while (true) {
@@ -43,9 +43,19 @@ public class Menu {
                 }
             }
 
+
             switch (opcion) {
                 case 1:
-
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println();
+                    System.out.println(" Top 10 canciones en un país en un día dado.");
+                    System.out.print("    Ingrese la fecha del ranking: ");
+                    String fecha = scanner.nextLine();
+                    System.out.println("    Ingrese el pais del ranking: ");
+                    String pais = scanner.nextLine();
+                    app.consulta1(fecha, pais);
 
                     break;
                 case 2:
