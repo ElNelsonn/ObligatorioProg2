@@ -29,7 +29,6 @@ public class Menu {
 
 
 
-
             while (true) {
                 try {
                     System.out.print("Ingrese el numero de la cosulta que desea realizar: ");
@@ -47,26 +46,34 @@ public class Menu {
             switch (opcion) {
                 case 1:
 
-                    // Lógica para la opción 1
+
                     break;
                 case 2:
-                    System.out.println("Has elegido la opción 2");
-                    // Lógica para la opción 2
+
+
                     break;
                 case 3:
-                    System.out.println("Saliendo...");
+
+
                     break;
 
                 case 4:
+
                     break;
 
                 case 5:
+
                     break;
                 case 6:
+
+
                     break;
                 default:
-                    System.out.println("Opción no válida. Por favor, intenta de nuevo.");
+                    System.out.println("Opcion no valida, ingrese un numero del 1 al 6: ");
             }
+
+
+
         }
 
 
