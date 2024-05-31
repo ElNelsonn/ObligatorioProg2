@@ -76,6 +76,45 @@ public class SpotifyAppImpl {
     }
 
 
+    public void consulta1(String fechaRanking, String pais) {
+        boolean estado = true;
+        while (estado) {
+            String[] keySongs = new String[10];
+            try {
+                this.dateCountryHash.get(fechaRanking).getRankingArray(pais);
+
+
+            } catch (ElementNotFound e) {
+                System.out.println("País o fecha invalida.");
+                estado =
+            }
+
+
+        }
+    }
+
+
+    public void infoErroneTomeUnaDecsion() {
+        Scanner scanner1 = new Scanner(System.in);
+        String opcion = scanner1.nextLine();
+
+        switch (opcion) {
+            case 1:
+                System.out.println("Has elegido la opción 1");
+                // Lógica para la opción 1
+                break;
+            case 2:
+                System.out.println("Has elegido la opción 2");
+                // Lógica para la opción 2
+                break;
+            case 3:
+
+
+    }
+
+
+
+
 
 }
 

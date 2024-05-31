@@ -1,3 +1,4 @@
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class Menu {
@@ -26,11 +27,26 @@ public class Menu {
             System.out.println(fGris + negro +  "               6) Finalizar programa                                                                                    " + b);
             System.out.println(fGris + "                                                                                                                        " + b);
 
-            opcion = scanner.nextInt();
+
+
+
+            while (true) {
+                try {
+                    System.out.print("Ingrese el numero de la cosulta que desea realizar: ");
+                    opcion = scanner.nextInt();
+                    if (opcion < 1 || 6 < opcion) {
+                        System.out.println("Opcion no valida, ingrese un numero del 1 al 6: ");
+                    } else {
+                        break;
+                    }
+                } catch (InputMismatchException e) {
+                    System.out.println("Opcion no valida, ingrese un numero del 1 al 6: ");
+                }
+            }
 
             switch (opcion) {
                 case 1:
-                    System.out.println("Has elegido la opción 1");
+
                     // Lógica para la opción 1
                     break;
                 case 2:

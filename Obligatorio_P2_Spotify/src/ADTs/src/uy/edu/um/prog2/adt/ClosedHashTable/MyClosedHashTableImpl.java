@@ -1,6 +1,7 @@
 package ADTs.src.uy.edu.um.prog2.adt.ClosedHashTable;
 
 import ADTs.src.uy.edu.um.prog2.adt.exceptions.ElementAlreadyInHash;
+import ADTs.src.uy.edu.um.prog2.adt.exceptions.ElementNotFound;
 
 public class MyClosedHashTableImpl implements MyClosedHashTable {
     private ClosedHashNode[] array;
@@ -17,7 +18,6 @@ public class MyClosedHashTableImpl implements MyClosedHashTable {
     private int index(String key) {
         return Math.abs(key.hashCode() % sizeArray);
     }
-
 
 
     public void put(String keyCountry, String keySong, int rankSong) throws ElementAlreadyInHash {
@@ -64,6 +64,16 @@ public class MyClosedHashTableImpl implements MyClosedHashTable {
         }
         return -1;
     }
+
+    public String[] getRankingArray(String countryKey) throws ElementNotFound {
+        int posicion = this.containsCountry(countryKey);
+        if (posicion == -1) {
+            throw new ElementNotFound();
+        }
+        return this.array[posicion].getValue();
+    }
+
+
 
     public String[] getRanking(String keyCountry) {
         int index = this.index(keyCountry);
