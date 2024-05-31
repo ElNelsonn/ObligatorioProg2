@@ -12,12 +12,12 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class SpotifyAppImpl {
-    private MyHashTable<String,Song> mainHash;
+    private MyHashTable<String,Song> songsHash;
     private MyHashTable<String, MyClosedHashTable> dateCountryHash;
 
     public SpotifyAppImpl(){
-        mainHash = new MyHashTableImpl<>(10516);
-        dateCountryHash =  new MyHashTableImpl<>(1000); //tam fechas
+        songsHash = new MyHashTableImpl<>(14000); //cant songs
+        dateCountryHash =  new MyHashTableImpl<>(360); //tam fechas
     }
 
 
@@ -31,18 +31,42 @@ public class SpotifyAppImpl {
             while (scanner.hasNext()) {
                 String line = scanner.next();
                 if (test) {
-                    String[] vec = line.split("\",\"");
-                    if(dateCountryHash.contains(vec[7])==-1){
-                        dateCountryHash.put(vec[7], dateCountryHash.get(vec[6]));
+
+                    //CREAR CANCION --------------------------------------------------
+
+                    String[] data = line.split("\",\"");
+                    String songKey = data[0];
+                    data[0] = songKey.substring(1);
+                    String[] artists = data[2].split(",");
+                    int tempo = Integer.parseInt(data[23]);
+                    Song newSong = new Song(data[1], data[0], artists, tempo);
+
+                    //INSERTAR CANCION AL MAIN HASH ----------------------------------
+
+                    this.songsHash.put(newSong.getSpotifyId(), newSong);
+                    int ranking = Integer.parseInt(data[3]);
+
+                    // INSERTAMOS KEY DE CANCION EN EL DATECOUNTRYHASH ----------------
+
+                        // Caso que no existe la fecha
+                    int dateIndex = dateCountryHash.contains(data[7]);
+                    if (dateIndex == -1) {
+                        MyClosedHashTable countryHash = new MyClosedHashTableImpl(100,50);
+                        dateCountryHash.put(data[7],countryHash);
+                        dateCountryHash.get(data[7]).put(data[6],data[0],ranking);
+                    } else {
+                        // Caso que existe la fecha pero no pais
+                        dateCountryHash.get(data[7]).put(data[6],data[0],ranking);
                     }
+
+
+
+
                 } else {
                     test = true;
                 }
-
             }
             scanner.close();
-
-
         } catch (FileNotFoundException e) {
             System.out.println("El archivo no se encuentra: " + e.getMessage());
         } catch (ElementAlreadyInHash e) {
@@ -50,7 +74,6 @@ public class SpotifyAppImpl {
         } catch (ElementNotFound e) {
             throw new RuntimeException(e);
         }
-
     }
 
 

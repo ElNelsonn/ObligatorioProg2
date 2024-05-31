@@ -3,11 +3,11 @@ import ADTs.src.uy.edu.um.prog2.adt.List.MyList;
 public class Song {
     private String name;
     private String spotifyId;
-    private MyList<String> artists;
+    private String[] artists;
     private int tempo;
 
 
-    public Song(String name, String spotifyId, MyList<String> artists, int tempo) {
+    public Song(String name, String spotifyId, String[] artists, int tempo) {
         this.name = name;
         this.spotifyId = spotifyId;
         this.artists = artists;
@@ -30,11 +30,11 @@ public class Song {
         this.spotifyId = spotifyId;
     }
 
-    public MyList<String> getArtists() {
+    public String[] getArtists() {
         return artists;
     }
 
-    public void setArtists(MyList<String> artists) {
+    public void setArtists(String[] artists) {
         this.artists = artists;
     }
 

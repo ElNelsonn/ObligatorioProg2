@@ -8,7 +8,7 @@ public class MyClosedHashTableImpl implements MyClosedHashTable {
     private int sizeArray;
 
 
-    public void MyClosedHashTableImpl(int sizeArray, int innerArraylength) {
+    public MyClosedHashTableImpl(int sizeArray, int innerArraylength) {
         this.array = new ClosedHashNode[sizeArray];
         this.innerArraylength = innerArraylength;
         this.sizeArray = sizeArray;
@@ -18,16 +18,30 @@ public class MyClosedHashTableImpl implements MyClosedHashTable {
         return Math.abs(key.hashCode() % sizeArray);
     }
 
+
+
     public void put(String keyCountry, String keySong, int rankSong) throws ElementAlreadyInHash {
         int index = this.index(keyCountry);
-        if (this.containsCountry(keyCountry) == -1) {
-            ClosedHashNode newNode = new ClosedHashNode(keyCountry, 50);
-            this.array[index] = newNode;
-            this.array[index].putSong(keySong, rankSong);
-        } else if (this.array[index].containsSong(rankSong)) {
+        int position = this.containsCountry(keyCountry);
+        if (position == -1) {
+            for (int i = index; i < this.sizeArray; i++) {
+                if (array[i] == null) {
+                    ClosedHashNode newNode = new ClosedHashNode(keyCountry,innerArraylength);
+                    this.array[i] = newNode;
+                    this.array[i].getInnerArray()[rankSong] = keySong;
+                }
+            }
+            for (int i = 0; i < index; i++) {
+                if (array[i] == null) {
+                    ClosedHashNode newNode = new ClosedHashNode(keyCountry,innerArraylength);
+                    this.array[i] = newNode;
+                    this.array[i].getInnerArray()[rankSong] = keySong;
+                }
+            }
+        } else if (this.array[position].containsSong(rankSong)) {
             throw new ElementAlreadyInHash();
         } else {
-            this.array[index].putSong(keySong, rankSong);
+            this.array[position].getInnerArray()[rankSong] = keySong;
         }
     }
 
