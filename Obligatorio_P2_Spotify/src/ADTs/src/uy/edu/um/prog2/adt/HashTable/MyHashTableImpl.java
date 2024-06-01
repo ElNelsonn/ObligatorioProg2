@@ -57,7 +57,7 @@ public class MyHashTableImpl<K,V> implements MyHashTable<K,V> {
         if (contains(key) == -1) {
             int indexOriginal = index(key);
             int index = indexOriginal;
-            while (index < sizeArray && array[index] != null) {
+            while ((index < sizeArray - 1) && (array[index] != null)) {
                 index++;
             }
             if (array[index] == null) {

@@ -61,14 +61,15 @@ public class SpotifyAppImpl {
                     int dateIndex = dateCountryHash.contains(data[7]);
                     if (dateIndex == -1) {
                         MyClosedHashTable countryHash = new MyClosedHashTableImpl(100, 50);
-                        dateCountryHash.put(data[7], countryHash);
+                        try {
+                            dateCountryHash.put(data[7], countryHash);
+                        } catch (ElementAlreadyInHash ignore){
+                        }
                         dateCountryHash.get(data[7]).put(data[6], data[0], ranking);
                     } else {
                         // Caso que existe la fecha pero no pais
                         dateCountryHash.get(data[7]).put(data[6], data[0], ranking);
                     }
-
-
                 } else {
                     test = true;
                 }
@@ -84,25 +85,25 @@ public class SpotifyAppImpl {
     }
 
 
-    public void consulta1(String fechaRanking, String pais) {
+    public void consulta1(String fechaRanking,String pais) {
         boolean estado = true;
+        System.out.println("fecha con la que enctro a consulta1 " + fechaRanking);
+        System.out.println("Pais con el que entro a consulta1 " + pais);
         while (estado) {
+            //System.out.println("entre a estado true en c1");
             String[] keySongs = new String[10];
             try {
+                //System.out.println("entre al try c1");
                 String[] ranking = this.dateCountryHash.get(fechaRanking).getRankingArray(pais);
                 System.out.println("Ranking " + fechaRanking + " " + pais + ":");
                 for (int i = 0; i < 10; i++) {
                     Song song = songsHash.get(ranking[i]);
                     String artists = String.join(", ", song.getArtists());
                     System.out.println("    " + (i + 1) + ") " + "Name: " + song.getName() + " Artists: " + artists);
-
                 }
-
             } catch (ElementNotFound e) {
-                System.out.println("País o fecha invalida.");
+                //System.out.println("País o fecha invalida.");
             }
-
-
         }
     }
 

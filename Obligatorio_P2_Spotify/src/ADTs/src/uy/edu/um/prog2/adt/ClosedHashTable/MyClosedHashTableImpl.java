@@ -39,7 +39,8 @@ public class MyClosedHashTableImpl implements MyClosedHashTable {
                 }
             }
         } else if (this.array[position].containsSong(rankSong-1)) {
-            throw new ElementAlreadyInHash();
+            System.out.println("No se inserto ya que ya existe una cancion en esa fecha en ese pais con ese top");
+            //throw new ElementAlreadyInHash();
         } else {
             this.array[position].getInnerArray()[rankSong-1] = keySong;
         }

@@ -9,6 +9,14 @@ public class Menu {
     private String negro = "\033[30m";
     private String b = "\u001B[0m";
 
+    public boolean fechaValida(String fecha){
+        String regex = "^\\d{4}-\\d{2}-\\d{2}$";
+        if (!fecha.matches(regex)) {
+            return false;
+        } else {
+            return true;
+        }
+    }
 
     public void showMenu(SpotifyAppImpl app) {
         Scanner scanner = new Scanner(System.in);
@@ -46,16 +54,37 @@ public class Menu {
 
             switch (opcion) {
                 case 1:
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println();
-                    System.out.println(" Top 10 canciones en un país en un día dado.");
-                    System.out.print("    Ingrese la fecha del ranking: ");
-                    String fecha = scanner.nextLine();
-                    System.out.println("    Ingrese el pais del ranking: ");
-                    String pais = scanner.nextLine();
-                    app.consulta1(fecha, pais);
+                    boolean inicioFuncion = true;
+                    while(inicioFuncion){
+                        System.out.println(" Top 10 canciones en un país en un día dado.");
+                        System.out.print("Ingrese la fecha del ranking:");
+                        String fecha3 = scanner.nextLine();
+                        if(fechaValida(fecha3)){
+                            System.out.println("Ingrese el pais: ");
+                            String pais = scanner.nextLine();
+                            app.consulta1(fecha3,pais);
+                        } else {
+                            boolean validez = fechaValida(fecha3);
+                            while (!validez) {
+                                System.out.println("Fecha incorrecta, esta debe de tener el formato (YYYY-MM-DD)");
+                                System.out.println("En caso de querer volver al menu oprima 0 ");
+                                System.out.println("Ingrese un valor: ");
+                                String fecha1 = scanner.nextLine();
+                                if (fecha1 == "0") {
+                                    inicioFuncion = false;
+                                } else {
+                                    validez = fechaValida(fecha1);
+                                    if (validez){
+                                        System.out.println("Ingrese el pais: ");
+                                        String pais = scanner.nextLine();
+                                        app.consulta1(fecha1,pais);
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+
 
                     break;
                 case 2:
