@@ -25,14 +25,11 @@ public class SpotifyAppImpl {
     //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"     Mi URL pruebas
     public void loadData() {
         try {
-            int count = 0;
             Scanner scanner = new Scanner(new File("C:/Users/Joaco/Desktop/universal_top_spotify_songs33.csv"));
             scanner.useDelimiter("\n");
 
             boolean test = false;
             while (scanner.hasNext()) {
-                count++;
-                System.out.println(count);
                 String line = scanner.next();
                 if (test) {
 

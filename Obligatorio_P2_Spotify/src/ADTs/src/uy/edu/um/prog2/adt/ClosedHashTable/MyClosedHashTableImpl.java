@@ -18,7 +18,7 @@ public class MyClosedHashTableImpl implements MyClosedHashTable {
     private int index(String key) {
         return Math.abs(key.hashCode() % sizeArray);
     }
-    
+
     public void put(String keyCountry, String keySong, int rankSong) throws ElementAlreadyInHash {
         int index = this.index(keyCountry);
         int position = this.containsCountry(keyCountry);
