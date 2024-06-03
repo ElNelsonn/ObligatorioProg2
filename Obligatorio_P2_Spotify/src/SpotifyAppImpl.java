@@ -82,6 +82,7 @@ public class SpotifyAppImpl {
         } catch (ElementNotFound e) {
             throw new RuntimeException(e);
         }
+
     }
 
 

@@ -18,33 +18,36 @@ public class MyClosedHashTableImpl implements MyClosedHashTable {
     private int index(String key) {
         return Math.abs(key.hashCode() % sizeArray);
     }
-
-
+    
     public void put(String keyCountry, String keySong, int rankSong) throws ElementAlreadyInHash {
         int index = this.index(keyCountry);
         int position = this.containsCountry(keyCountry);
+        int i = index;
         if (position == -1) {
-            for (int i = index; i < this.sizeArray; i++) {
-                if (array[i] == null) {
-                    ClosedHashNode newNode = new ClosedHashNode(keyCountry,innerArraylength);
-                    this.array[i] = newNode;
-                    this.array[i].getInnerArray()[rankSong-1] = keySong;
+            while ((i < this.sizeArray) && (array[i] != null)) {
+                i++;
+            }
+            if (array[i] == null) {
+                ClosedHashNode newNode = new ClosedHashNode(keyCountry, innerArraylength);
+                this.array[i] = newNode;
+                this.array[i].getInnerArray()[rankSong - 1] = keySong;
+            } else {
+                int j = 0;
+                while ((j < index) && (array[j] != null)) {
+                    j++;
+                }
+                if (array[j] == null) {
+                    ClosedHashNode newNode = new ClosedHashNode(keyCountry, innerArraylength);
+                    this.array[j] = newNode;
+                    this.array[j].getInnerArray()[rankSong - 1] = keySong;
                 }
             }
-            for (int i = 0; i < index; i++) {
-                if (array[i] == null) {
-                    ClosedHashNode newNode = new ClosedHashNode(keyCountry,innerArraylength);
-                    this.array[i] = newNode;
-                    this.array[i].getInnerArray()[rankSong-1] = keySong;
-                }
-            }
-        } else if (this.array[position].containsSong(rankSong-1)) {
-            System.out.println("No se inserto ya que ya existe una cancion en esa fecha en ese pais con ese top");
-            //throw new ElementAlreadyInHash();
         } else {
-            this.array[position].getInnerArray()[rankSong-1] = keySong;
+            //caso que existe pais y no la cancion
+            array[position].getInnerArray()[rankSong-1] = keySong;
         }
     }
+
 
 
     public int containsCountry(String keyCountry) {
@@ -74,12 +77,6 @@ public class MyClosedHashTableImpl implements MyClosedHashTable {
         return this.array[posicion].getValue();
     }
 
-
-
-    public String[] getRanking(String keyCountry) {
-        int index = this.index(keyCountry);
-        return this.array[index].getInnerArray();
-    }
 
 
     public ClosedHashNode[] getArray() {
