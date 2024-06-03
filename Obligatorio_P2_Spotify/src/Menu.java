@@ -19,11 +19,13 @@ public class Menu {
     }
 
     public void showMenu(SpotifyAppImpl app) {
-        Scanner scanner = new Scanner(System.in);
+        Scanner scanner1 = new Scanner(System.in);
         int opcion;
 
 
         while (this.prendido) {
+            System.out.println();
+            System.out.println();
             System.out.println(fGris + "                                                                                                                        " + b);
             System.out.println(fGris + "                                                                                                                        " + b);
             System.out.print(fGris + "                                                  " + b); System.out.print(fVerde + negro + " Spotify App " + b);System.out.println(fGris + "                                                         " + b);
@@ -35,58 +37,78 @@ public class Menu {
             System.out.println(fGris + negro +  "               5) Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.         " + b);
             System.out.println(fGris + negro +  "               6) Finalizar programa                                                                                    " + b);
             System.out.println(fGris + "                                                                                                                        " + b);
-
+            System.out.println(fGris + "                                                                                                                        " + b);
 
             while (true) {
                 try {
+                    System.out.println();
                     System.out.print("Ingrese el numero de la cosulta que desea realizar: ");
-                    opcion = scanner.nextInt();
+                    opcion = scanner1.nextInt();
+                    System.out.println();
+
                     if (opcion < 1 || 6 < opcion) {
-                        System.out.println("Opcion no valida, ingrese un numero del 1 al 6: ");
+                        System.out.println("Opcion no valida, ingrese un numero del 1 al 6. ");
                     } else {
                         break;
                     }
                 } catch (InputMismatchException e) {
-                    System.out.println("Opcion no valida, ingrese un numero del 1 al 6: ");
+                    System.out.println();
+                    System.out.println("Opcion no valida, ingrese un numero del 1 al 6. ");
+                    scanner1.nextLine();
                 }
             }
 
 
             switch (opcion) {
+
+                // Top 10 canciones en un país en un día dado.
                 case 1:
-                    boolean inicioFuncion = true;
-                    while(inicioFuncion){
-                        System.out.println(" Top 10 canciones en un país en un día dado.");
-                        System.out.print("Ingrese la fecha del ranking:");
-                        String fecha3 = scanner.nextLine();
-                        if(fechaValida(fecha3)){
-                            System.out.println("Ingrese el pais: ");
-                            String pais = scanner.nextLine();
-                            app.consulta1(fecha3,pais);
+                    boolean inicioFuncion1 = true;
+                    while (inicioFuncion1) {
+                        Scanner scanner2 = new Scanner(System.in);
+                        System.out.println("Top 10 canciones en un país en un día dado.");
+                        System.out.print("    Ingrese la fecha del ranking (YYYY-MM-DD): ");
+                        String fecha = scanner2.nextLine();
+
+                        if (fechaValida(fecha)) {
+                            System.out.print("    Ingrese el pais: ");
+                            String pais = scanner2.nextLine();
+                            app.consulta1(fecha,pais);
+                            inicioFuncion1 = false;
+
                         } else {
-                            boolean validez = fechaValida(fecha3);
+                            boolean validez = fechaValida(fecha);
                             while (!validez) {
+                                System.out.println();
                                 System.out.println("Fecha incorrecta, esta debe de tener el formato (YYYY-MM-DD)");
-                                System.out.println("En caso de querer volver al menu oprima 0 ");
-                                System.out.println("Ingrese un valor: ");
-                                String fecha1 = scanner.nextLine();
-                                if (fecha1 == "0") {
-                                    inicioFuncion = false;
+                                System.out.println("En caso de querer volver al menu oprima 0. ");
+                                System.out.print("  Ingrese un valor: ");
+                                String fecha1 = scanner2.nextLine();
+
+                                if (fecha1.equals("0")) {
+                                    inicioFuncion1 = false;
+                                    validez = true;
                                 } else {
                                     validez = fechaValida(fecha1);
-                                    if (validez){
-                                        System.out.println("Ingrese el pais: ");
-                                        String pais = scanner.nextLine();
+                                    if (validez) {
+                                        System.out.print("  Ingrese el pais: ");
+                                        String pais = scanner2.nextLine();
                                         app.consulta1(fecha1,pais);
+                                        inicioFuncion1 = false;
                                     }
                                 }
                             }
                         }
                     }
-
-
                     break;
+
+                //Top 5 canciones que aparecen en más top 50 en un día dado.
                 case 2:
+
+
+
+
+
 
 
                     break;
@@ -113,13 +135,7 @@ public class Menu {
 
 
         }
-
-
-
-
-
-
-        scanner.close();
+        scanner1.close();
     }
 
 

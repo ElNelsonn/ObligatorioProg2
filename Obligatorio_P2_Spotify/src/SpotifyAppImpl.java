@@ -22,10 +22,12 @@ public class SpotifyAppImpl {
     }
 
 
-    //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"     Mi URL pruebas
     public void loadData() {
+        //"C:/Users/Joaco/Desktop/universal_top_spotify_songs33.csv"
+        //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"
+        //"C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"
         try {
-            Scanner scanner = new Scanner(new File("C:/Users/Joaco/Desktop/universal_top_spotify_songs33.csv"));
+            Scanner scanner = new Scanner(new File("C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"));
             scanner.useDelimiter("\n");
 
             boolean test = false;
@@ -83,27 +85,36 @@ public class SpotifyAppImpl {
     }
 
 
+    // Top 10 canciones en un país en un día dado.
     public void consulta1(String fechaRanking,String pais) {
-        boolean estado = true;
-        System.out.println("fecha con la que enctro a consulta1 " + fechaRanking);
-        System.out.println("Pais con el que entro a consulta1 " + pais);
-        while (estado) {
-            //System.out.println("entre a estado true en c1");
-            String[] keySongs = new String[10];
-            try {
-                //System.out.println("entre al try c1");
-                String[] ranking = this.dateCountryHash.get(fechaRanking).getRankingArray(pais);
-                System.out.println("Ranking " + fechaRanking + " " + pais + ":");
-                for (int i = 0; i < 10; i++) {
-                    Song song = songsHash.get(ranking[i]);
-                    String artists = String.join(", ", song.getArtists());
-                    System.out.println("    " + (i + 1) + ") " + "Name: " + song.getName() + " Artists: " + artists);
-                }
-            } catch (ElementNotFound e) {
-                //System.out.println("País o fecha invalida.");
+        String[] keySongs = new String[10];
+        try {
+            String[] ranking = this.dateCountryHash.get(fechaRanking).getRankingArray(pais);
+            System.out.println();
+            System.out.println("Ranking " + fechaRanking + " " + pais + ":");
+            System.out.println();
+            for (int i = 0; i < 10; i++) {
+                Song song = songsHash.get(ranking[i]);
+                String artists = String.join(", ", song.getArtists());
+                System.out.println("    " + (i + 1) + ") " + "Song name: " + song.getName());
+                System.out.println( "       Artists: " + artists);
+                System.out.println();
             }
+            Scanner temp = new Scanner(System.in);
+            System.out.print("Para volver al menu ingrese cualquier valor: ");
+            temp.nextLine();
+
+            System.out.println();
+            System.out.println();
+
+        } catch (ElementNotFound e) {
+            System.out.println();
+            System.out.println("Ha ingresado una fecha o pais invalido.");
         }
     }
+
+
+
 
 
 //    public void infoErroneaTomeUnaDecsion() {
