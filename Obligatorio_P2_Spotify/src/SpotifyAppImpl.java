@@ -9,6 +9,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -21,6 +24,12 @@ public class SpotifyAppImpl {
         dateCountryHash = new MyHashTableImpl<>(360); //tam fechas
     }
 
+    private String stringToDate(String date){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate date1 = LocalDate.parse(date,formatter);
+        LocalDate nuevaFecha = date1.plusDays(1);
+        return nuevaFecha.format(formatter);
+    }
 
     public void loadData() {
         System.out.println();
@@ -30,7 +39,7 @@ public class SpotifyAppImpl {
         //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"
         //"C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"
         try {
-            Scanner scanner = new Scanner(new File("C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"));
+            Scanner scanner = new Scanner(new File("C:/Users/Joaco/Desktop/universal_top_spotify_songs.csv"));
             scanner.useDelimiter("\n");
 
             boolean test = false;
