@@ -23,6 +23,9 @@ public class SpotifyAppImpl {
 
 
     public void loadData() {
+        System.out.println();
+        System.out.println("Loading data, please wait...");
+        System.out.println();
         //"C:/Users/Joaco/Desktop/universal_top_spotify_songs33.csv"
         //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"
         //"C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"
@@ -73,6 +76,7 @@ public class SpotifyAppImpl {
                     test = true;
                 }
             }
+            System.out.println("Data loaded.");
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("El archivo no se encuentra: " + e.getMessage());

@@ -24,20 +24,38 @@ public class Menu {
 
 
         while (this.prendido) {
+//            System.out.println();
+//            System.out.println();
+//            System.out.println(fGris + "                                                                                                                        " + b);
+//            System.out.println(fGris + "                                                                                                                        " + b);
+//            System.out.print(fGris + "                                                  " + b); System.out.print(fVerde + negro + " Spotify App " + b);System.out.println(fGris + "                                                         " + b);
+//            System.out.println(fGris + "                                                                                                                        " + b);
+//            System.out.println(fGris + negro +  "               1) Top 10 canciones en un país en un día dado.                                                           " + b);
+//            System.out.println(fGris + negro +  "               2) Top 5 canciones que aparecen en más top 50 en un día dado.                                            " + b);
+//            System.out.println(fGris + negro +  "               3) Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.                           " + b);
+//            System.out.println(fGris + negro +  "               4) Cantidad de veces que aparece un artista específico en un top 50 en una fecha dada.                   " + b);
+//            System.out.println(fGris + negro +  "               5) Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.         " + b);
+//            System.out.println(fGris + negro +  "               6) Finalizar programa                                                                                    " + b);
+//            System.out.println(fGris + "                                                                                                                        " + b);
+//            System.out.println(fGris + "                                                                                                                        " + b);
+
             System.out.println();
-            System.out.println();
-            System.out.println(fGris + "                                                                                                                        " + b);
-            System.out.println(fGris + "                                                                                                                        " + b);
-            System.out.print(fGris + "                                                  " + b); System.out.print(fVerde + negro + " Spotify App " + b);System.out.println(fGris + "                                                         " + b);
-            System.out.println(fGris + "                                                                                                                        " + b);
-            System.out.println(fGris + negro +  "               1) Top 10 canciones en un país en un día dado.                                                           " + b);
-            System.out.println(fGris + negro +  "               2) Top 5 canciones que aparecen en más top 50 en un día dado.                                            " + b);
-            System.out.println(fGris + negro +  "               3) Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.                           " + b);
-            System.out.println(fGris + negro +  "               4) Cantidad de veces que aparece un artista específico en un top 50 en una fecha dada.                   " + b);
-            System.out.println(fGris + negro +  "               5) Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.         " + b);
-            System.out.println(fGris + negro +  "               6) Finalizar programa                                                                                    " + b);
-            System.out.println(fGris + "                                                                                                                        " + b);
-            System.out.println(fGris + "                                                                                                                        " + b);
+            System.out.print("                                                  " + b); System.out.print(fVerde + negro + " Spotify App " + b);System.out.println("                                                         " + b);
+            System.out.println("                                                                                                                        " + b);
+            System.out.println("               1) Top 10 canciones en un país en un día dado.                                                           " + b);
+            System.out.println("               2) Top 5 canciones que aparecen en más top 50 en un día dado.                                            " + b);
+            System.out.println("               3) Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.                           " + b);
+            System.out.println("               4) Cantidad de veces que aparece un artista específico en un top 50 en una fecha dada.                   " + b);
+            System.out.println("               5) Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.         " + b);
+            System.out.println("               6) Finalizar programa                                                                                    " + b);
+
+
+
+
+
+
+
+
 
             while (true) {
                 try {
