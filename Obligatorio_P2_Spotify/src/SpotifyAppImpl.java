@@ -18,10 +18,11 @@ import java.util.Scanner;
 public class SpotifyAppImpl {
     private MyHashTable<String, Song> songsHash;
     private MyHashTable<String, MyClosedHashTable> dateCountryHash;
-
+    private MyHashTable<String, String> artistHash;
     public SpotifyAppImpl() {
         songsHash = new MyHashTableImpl<>(14000); //cant songs
         dateCountryHash = new MyHashTableImpl<>(360); //tam fechas
+        artistHash = new MyHashTableImpl<>(14000);
     }
 
     private String stringToDate(String date){
@@ -39,7 +40,7 @@ public class SpotifyAppImpl {
         //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"
         //"C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"
         try {
-            Scanner scanner = new Scanner(new File("C:/Users/Joaco/Desktop/universal_top_spotify_songs.csv"));
+            Scanner scanner = new Scanner(new File("C:/Users/Joaco/Desktop/universal_top_spotify_songs33.csv"));
             scanner.useDelimiter("\n");
 
             boolean test = false;
@@ -59,8 +60,14 @@ public class SpotifyAppImpl {
                     data[23] = data[23].replace(".","");
                     int tempo = Integer.parseInt(data[23]);
                     Song newSong = new Song(data[1], data[0], artists, tempo);
-
-                    //INSERTAR CANCION AL MAIN HASH ----------------------------------
+                    // Inserto artistas --------------------------------
+                    for(int i=0; i<artists.length;i++){
+                        try{
+                            artistHash.put(artists[i],artists[i]);
+                        }catch (ElementAlreadyInHash ignore){
+                        }
+                    }
+                    // INSERTAR CANCION AL MAIN HASH ----------------------------------
                     int ranking = Integer.parseInt(data[3]);
                     try {
                         this.songsHash.put(newSong.getSpotifyId(), newSong);
