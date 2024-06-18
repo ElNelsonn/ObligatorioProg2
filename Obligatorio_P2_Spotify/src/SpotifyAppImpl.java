@@ -1,3 +1,4 @@
+import ADTs.src.uy.edu.um.prog2.adt.ClosedHashTable.ClosedHashNode;
 import ADTs.src.uy.edu.um.prog2.adt.ClosedHashTable.MyClosedHashTable;
 import ADTs.src.uy.edu.um.prog2.adt.ClosedHashTable.MyClosedHashTableImpl;
 import ADTs.src.uy.edu.um.prog2.adt.HashTable.MyHashTable;
@@ -18,16 +19,17 @@ import java.util.Scanner;
 public class SpotifyAppImpl {
     private MyHashTable<String, Song> songsHash;
     private MyHashTable<String, MyClosedHashTable> dateCountryHash;
-    private MyHashTable<String, String> artistHash;
+    private MyHashTable<String, Integer> artistHash;
+
     public SpotifyAppImpl() {
         songsHash = new MyHashTableImpl<>(14000); //cant songs
         dateCountryHash = new MyHashTableImpl<>(360); //tam fechas
-        artistHash = new MyHashTableImpl<>(14000);
+        artistHash = new MyHashTableImpl<>(10000);
     }
 
-    private String stringToDate(String date){
+    private String nextDateString(String date) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate date1 = LocalDate.parse(date,formatter);
+        LocalDate date1 = LocalDate.parse(date, formatter);
         LocalDate nuevaFecha = date1.plusDays(1);
         return nuevaFecha.format(formatter);
     }
@@ -40,7 +42,7 @@ public class SpotifyAppImpl {
         //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"
         //"C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"
         try {
-            Scanner scanner = new Scanner(new File("C:/Users/Joaco/Desktop/universal_top_spotify_songs33.csv"));
+            Scanner scanner = new Scanner(new File("C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"));
             scanner.useDelimiter("\n");
 
             boolean test = false;
@@ -57,14 +59,15 @@ public class SpotifyAppImpl {
                     String songKey = data[0];
                     data[0] = songKey.substring(1);
                     String[] artists = data[2].split(",");
-                    data[23] = data[23].replace(".","");
+                    data[23] = data[23].replace(".", "");
                     int tempo = Integer.parseInt(data[23]);
                     Song newSong = new Song(data[1], data[0], artists, tempo);
+
                     // Inserto artistas --------------------------------
-                    for(int i=0; i<artists.length;i++){
-                        try{
-                            artistHash.put(artists[i],artists[i]);
-                        }catch (ElementAlreadyInHash ignore){
+                    for (int i = 0; i < artists.length; i++) {
+                        try {
+                            artistHash.put(artists[i], 0);
+                        } catch (ElementAlreadyInHash ignore) {
                         }
                     }
                     // INSERTAR CANCION AL MAIN HASH ----------------------------------
@@ -81,7 +84,7 @@ public class SpotifyAppImpl {
                         MyClosedHashTable countryHash = new MyClosedHashTableImpl(100, 50);
                         try {
                             dateCountryHash.put(data[7], countryHash);
-                        } catch (ElementAlreadyInHash ignore){
+                        } catch (ElementAlreadyInHash ignore) {
                         }
                         dateCountryHash.get(data[7]).put(data[6], data[0], ranking);
                     } else {
@@ -106,7 +109,7 @@ public class SpotifyAppImpl {
 
 
     // Top 10 canciones en un país en un día dado.
-    public void consulta1(String fechaRanking,String pais) {
+    public void consulta1(String fechaRanking, String pais) {
         String[] keySongs = new String[10];
         try {
             String[] ranking = this.dateCountryHash.get(fechaRanking).getRankingArray(pais);
@@ -117,7 +120,7 @@ public class SpotifyAppImpl {
                 Song song = songsHash.get(ranking[i]);
                 String artists = String.join(", ", song.getArtists());
                 System.out.println("    " + (i + 1) + ") " + "Song name: " + song.getName());
-                System.out.println( "       Artists: " + artists);
+                System.out.println("       Artists: " + artists);
                 System.out.println();
             }
             Scanner temp = new Scanner(System.in);
@@ -133,6 +136,102 @@ public class SpotifyAppImpl {
         }
     }
 
+    public void consulta2(String fechaDeConsulta) {
+        try {
+
+            ClosedHashNode[] arrayPaises = this.dateCountryHash.get(fechaDeConsulta).getArray();
+            int sizeArray = arrayPaises.length;
+            String idSong;
+            for (int i = 0; i < sizeArray; i++) {
+                if (!(arrayPaises[i] == null)) {
+                    for (int j = 0; j < 50; j++) {
+                        idSong = arrayPaises[i].getInnerArray()[j];
+                        if (!(idSong == null)) {
+                            this.songsHash.get(idSong).incCounter();
+                        }
+                    }
+                }
+            }
+
+            Song[] top5Songs = new Song[5];
+            int sizeSongs = this.songsHash.getArray().length;
+
+            Song songToCheck;
+            for (int i = 0; i < sizeSongs; i++) {
+                if (!(this.songsHash.getArray()[i] == null)) {
+                    songToCheck = this.songsHash.getArray()[i].getValue();
+
+                    if (top5Songs[0] == null) {
+
+                        top5Songs[0] = songToCheck;
+                    } else if (top5Songs[1] == null) {
+
+                        top5Songs[1] = songToCheck;
+                    } else if (top5Songs[2] == null) {
+
+                        top5Songs[2] = songToCheck;
+                    } else if (top5Songs[3] == null) {
+
+                        top5Songs[3] = songToCheck;
+                    } else if (top5Songs[4] == null) {
+
+                        top5Songs[4] = songToCheck;
+                    } else {
+
+                        int posLowest = 0;
+                        for (int j = 1; j < 5; j++) {
+                            if (top5Songs[posLowest].getTemp_counter() > top5Songs[j].getTemp_counter()) {
+                                posLowest = j;
+                            }
+                        }
+
+                        if (songToCheck.getTemp_counter() > top5Songs[posLowest].getTemp_counter()) {
+                            top5Songs[posLowest] = songToCheck;
+                        }
+                    }
+                }
+            }
+
+            Arrays.sort(top5Songs);
+            System.out.println();
+            System.out.println("Top 5 canciones con mas apariciones en " + fechaDeConsulta + ":");
+            System.out.println();
+            for (int i = 4; i >= 0; i--) {
+                Song song = top5Songs[i];
+                String artists = String.join(", ", song.getArtists());
+                System.out.println("    " + (5 - i) + ") " + "Song name: " + song.getName());
+                System.out.println("       Apariciones: " + song.getTemp_counter());
+                System.out.println("       Artists: " + artists);
+                System.out.println();
+            }
+
+            for (int i = 0; i < sizeSongs; i++) {
+                if (!(this.songsHash.getArray()[i] == null)) {
+                    this.songsHash.getArray()[i].getValue().resetCounter();
+                }
+            }
+
+            Scanner temp = new Scanner(System.in);
+            System.out.print("Para volver al menu ingrese cualquier valor: ");
+            temp.nextLine();
+
+            System.out.println();
+            System.out.println();
+
+        } catch (ElementNotFound e) {
+        }
+    }
+
+    public void consulta3(String fecha1, String fecha2) {
+
+        String fechaTemp = fecha1;
+        
+        while (!(fechaTemp.equals(fecha2))) {
+
+
+        }
+
+    }
 
 
 

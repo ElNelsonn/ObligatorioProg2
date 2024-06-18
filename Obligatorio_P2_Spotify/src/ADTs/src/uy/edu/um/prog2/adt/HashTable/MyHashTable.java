@@ -13,4 +13,6 @@ public interface MyHashTable<K,V> {
 
     public void remove(K key) throws ElementNotFound;
 
+    public HashNode<K, V>[] getArray();
+
 }

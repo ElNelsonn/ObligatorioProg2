@@ -10,4 +10,6 @@ public interface MyClosedHashTable {
 
     String[] getRankingArray(String countryKey) throws ElementNotFound;
 
+    ClosedHashNode[] getArray();
+
 }
