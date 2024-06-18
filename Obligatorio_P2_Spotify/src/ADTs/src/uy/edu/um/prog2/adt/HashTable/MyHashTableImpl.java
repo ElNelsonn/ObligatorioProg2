@@ -17,6 +17,13 @@ public class MyHashTableImpl<K,V> implements MyHashTable<K,V> {
         return Math.abs(key.hashCode() % sizeArray);
     }
 
+    public void setValue(K nombre, V value) {
+        int index = contains(nombre);
+        if (index != -1) {
+            this.array[index].setValue(value);
+        }
+    }
+
     private void duplicate(){
         int oldSizeArray = this.sizeArray;
         HashNode<K, V>[] oldArray = this.array;

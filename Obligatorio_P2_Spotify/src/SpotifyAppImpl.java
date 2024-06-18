@@ -138,7 +138,6 @@ public class SpotifyAppImpl {
 
     public void consulta2(String fechaDeConsulta) {
         try {
-
             ClosedHashNode[] arrayPaises = this.dateCountryHash.get(fechaDeConsulta).getArray();
             int sizeArray = arrayPaises.length;
             String idSong;
@@ -223,15 +222,77 @@ public class SpotifyAppImpl {
     }
 
     public void consulta3(String fecha1, String fecha2) {
+        try {
+            String fechaTemp = fecha1;
+            ClosedHashNode[] arrayPaises;
+            while (!(fechaTemp.equals(fecha2))) {
 
-        String fechaTemp = fecha1;
-        
-        while (!(fechaTemp.equals(fecha2))) {
+                arrayPaises = this.dateCountryHash.get(fechaTemp).getArray();
+                int sizeArray = arrayPaises.length;
+
+                String idSong;
+                String[] artists;
+                for (int i = 0; i < sizeArray; i++) {
+                    if (!(arrayPaises[i] == null)) {
+                        for (int j = 0; j < 50; j++) {
+                            idSong = arrayPaises[i].getInnerArray()[j];
+                            if (!(idSong == null)) {
+                                artists = this.songsHash.get(idSong).getArtists();
+                                for (int k = 0; k < artists.length; k++) {
+                                    int newValuee = this.artistHash.get(artists[k]);
+                                    newValuee++;
+                                    this.artistHash.setValue(artists[k], newValuee);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            String[] top7Artist = new String[7];
+            int sizeSongs = this.songsHash.getArray().length;
+
+            Song songToCheck;
+            for (int i = 0; i < sizeSongs; i++) {
+                if (!(this.songsHash.getArray()[i] == null)) {
+                    songToCheck = this.songsHash.getArray()[i].getValue();
+
+                    if (top5Songs[0] == null) {
+
+                        top5Songs[0] = songToCheck;
+                    } else if (top5Songs[1] == null) {
+
+                        top5Songs[1] = songToCheck;
+                    } else if (top5Songs[2] == null) {
+
+                        top5Songs[2] = songToCheck;
+                    } else if (top5Songs[3] == null) {
+
+                        top5Songs[3] = songToCheck;
+                    } else if (top5Songs[4] == null) {
+
+                        top5Songs[4] = songToCheck;
+                    } else {
+
+                        int posLowest = 0;
+                        for (int j = 1; j < 5; j++) {
+                            if (top5Songs[posLowest].getTemp_counter() > top5Songs[j].getTemp_counter()) {
+                                posLowest = j;
+                            }
+                        }
+
+                        if (songToCheck.getTemp_counter() > top5Songs[posLowest].getTemp_counter()) {
+                            top5Songs[posLowest] = songToCheck;
+                        }
+                    }
+                }
+            }
 
 
+        } catch (ElementNotFound e) {
         }
-
     }
+
 
 
 

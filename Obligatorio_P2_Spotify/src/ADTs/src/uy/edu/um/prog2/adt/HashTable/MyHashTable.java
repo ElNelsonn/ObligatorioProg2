@@ -15,4 +15,6 @@ public interface MyHashTable<K,V> {
 
     public HashNode<K, V>[] getArray();
 
+    void setValue(K nombre, V value);
+
 }
