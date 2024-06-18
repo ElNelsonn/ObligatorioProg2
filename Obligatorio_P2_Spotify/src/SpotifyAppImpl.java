@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.security.spec.RSAOtherPrimeInfo;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -42,7 +43,7 @@ public class SpotifyAppImpl {
         //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"
         //"C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"
         try {
-            Scanner scanner = new Scanner(new File("C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"));
+            Scanner scanner = new Scanner(new File("C:/Users/Joaco/Desktop/universal_top_spotify_songs33.csv"));
             scanner.useDelimiter("\n");
 
             boolean test = false;
@@ -58,7 +59,7 @@ public class SpotifyAppImpl {
                     }
                     String songKey = data[0];
                     data[0] = songKey.substring(1);
-                    String[] artists = data[2].split(",");
+                    String[] artists = data[2].split(", ");
                     data[23] = data[23].replace(".", "");
                     int tempo = Integer.parseInt(data[23]);
                     Song newSong = new Song(data[1], data[0], artists, tempo);
@@ -223,9 +224,11 @@ public class SpotifyAppImpl {
 
     public void consulta3(String fecha1, String fecha2) {
         try {
+            System.out.println("ello");
             String fechaTemp = fecha1;
             ClosedHashNode[] arrayPaises;
-            while (!(fechaTemp.equals(fecha2))) {
+            boolean tempBoolean = false;
+            while (!(fechaTemp.equals(fecha2)) || (tempBoolean)) {
 
                 arrayPaises = this.dateCountryHash.get(fechaTemp).getArray();
                 int sizeArray = arrayPaises.length;
@@ -239,57 +242,102 @@ public class SpotifyAppImpl {
                             if (!(idSong == null)) {
                                 artists = this.songsHash.get(idSong).getArtists();
                                 for (int k = 0; k < artists.length; k++) {
-                                    int newValuee = this.artistHash.get(artists[k]);
-                                    newValuee++;
-                                    this.artistHash.setValue(artists[k], newValuee);
+                                    if(artists[k]!=null) {
+                                        int newValuee = this.artistHash.get(artists[k]);
+                                        newValuee++;
+                                        this.artistHash.setValue(artists[k], newValuee);
+                                    }
                                 }
                             }
                         }
                     }
                 }
+                fechaTemp = this.nextDateString(fechaTemp);
+
+                if (tempBoolean) {
+                    break;
+                }
+                else if (fechaTemp.equals(fecha2)) {
+                    tempBoolean = true;
+                }
             }
+            System.out.println("hello");
 
             String[] top7Artist = new String[7];
-            int sizeSongs = this.songsHash.getArray().length;
+            int sizeSongs = this.artistHash.getArray().length;
 
-            Song songToCheck;
+            String artistToCheck;
             for (int i = 0; i < sizeSongs; i++) {
-                if (!(this.songsHash.getArray()[i] == null)) {
-                    songToCheck = this.songsHash.getArray()[i].getValue();
+                if (!(this.artistHash.getArray()[i] == null)) {
+                    artistToCheck = this.artistHash.getArray()[i].getKey();
 
-                    if (top5Songs[0] == null) {
+                    if (top7Artist[0] == null) {
 
-                        top5Songs[0] = songToCheck;
-                    } else if (top5Songs[1] == null) {
+                        top7Artist[0] = artistToCheck;
+                    } else if (top7Artist[1] == null) {
 
-                        top5Songs[1] = songToCheck;
-                    } else if (top5Songs[2] == null) {
+                        top7Artist[1] = artistToCheck;
+                    } else if (top7Artist[2] == null) {
 
-                        top5Songs[2] = songToCheck;
-                    } else if (top5Songs[3] == null) {
+                        top7Artist[2] = artistToCheck;
+                    } else if (top7Artist[3] == null) {
 
-                        top5Songs[3] = songToCheck;
-                    } else if (top5Songs[4] == null) {
+                        top7Artist[3] = artistToCheck;
+                    } else if (top7Artist[4] == null) {
 
-                        top5Songs[4] = songToCheck;
+                        top7Artist[4] = artistToCheck;
+                    } else if (top7Artist[5] == null){
+
+                        top7Artist[5] = artistToCheck;
+                    } else if (top7Artist[6] == null){
+
+                        top7Artist[6] = artistToCheck;
+
                     } else {
 
                         int posLowest = 0;
-                        for (int j = 1; j < 5; j++) {
-                            if (top5Songs[posLowest].getTemp_counter() > top5Songs[j].getTemp_counter()) {
+                        for (int j = 1; j < 7; j++) {
+                            if (artistHash.get(top7Artist[posLowest]) > artistHash.get(top7Artist[j])) {
                                 posLowest = j;
                             }
                         }
 
-                        if (songToCheck.getTemp_counter() > top5Songs[posLowest].getTemp_counter()) {
-                            top5Songs[posLowest] = songToCheck;
+                        if (artistHash.get(top7Artist[posLowest]) < artistHash.get(artistToCheck)) {
+                            top7Artist[posLowest] = artistToCheck;
                         }
                     }
                 }
             }
 
+            Arrays.sort(top7Artist);
+            System.out.println();
+            System.out.println("Top 7 artistas con mas apariciones en " + fecha1 + " - " + fecha2 + ":");
+            System.out.println();
+            for (int i = 6; i >= 0; i--) {
+                String artist = top7Artist[i];
+                System.out.println("    " + (7 - i) + ") " + "Artist name: " + artist);
+                System.out.println("       Apariciones: " + artistHash.get(artist));
+                System.out.println();
+            }
+            System.out.println(artistHash.get("Feid"));
+
+            for (int i = 0; i < artistHash.getArray().length; i++) {
+                if (!(this.artistHash.getArray()[i] == null)) {
+                    this.artistHash.getArray()[i].setValue(0);
+                }
+            }
+            System.out.println(artistHash.get("Feid"));
+
+
+            Scanner temp = new Scanner(System.in);
+            System.out.print("Para volver al menu ingrese cualquier valor: ");
+            temp.nextLine();
+
+            System.out.println();
+            System.out.println();
 
         } catch (ElementNotFound e) {
+            System.out.println("bye");
         }
     }
 

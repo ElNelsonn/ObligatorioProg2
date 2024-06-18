@@ -24,7 +24,7 @@ public class Menu {
         try {
             LocalDate d1 = LocalDate.parse(date1);
             LocalDate d2 = LocalDate.parse(date2);
-            return d1.isAfter(d2);
+            return d2.isAfter(d1);
         } catch (DateTimeParseException e) {
             System.out.println("Invalid date format. Please use YYYY-MM-DD.");
             return false;
@@ -164,10 +164,11 @@ public class Menu {
                         System.out.print("    Ingrese la fecha inicial (YYYY-MM-DD): ");
                         String fecha1 = scanner4.nextLine();
                         System.out.print("    Ingrese la fecha final (YYYY-MM-DD): ");
-                        String fecha2 = scanner4.nextLine();
+                        Scanner scanner5 = new Scanner(System.in);
+                        String fecha2 = scanner5.nextLine();
 
                         if (fechaValida(fecha1) && fechaValida(fecha2) && isDate1AfterDate2(fecha1, fecha2)) {
-
+                            app.consulta3(fecha1,fecha2);
                             inicioFuncion3 = false;
                         } else {
                             boolean validez = false;
@@ -185,7 +186,7 @@ public class Menu {
                                 } else {
                                     System.out.print("    Ingrese la fecha final (YYYY-MM-DD): ");
                                     fecha2 = scanner4.nextLine();
-
+                                    app.consulta3(fecha1,fecha2);
                                     validez = (fechaValida(fecha1) && fechaValida(fecha2) && isDate1AfterDate2(fecha1, fecha2));
                                     if (validez) {
 
@@ -196,8 +197,50 @@ public class Menu {
                         }
                     }
 
+//
+//                    boolean inicioFuncion3 = true;
+//                    Scanner scanner = new Scanner(System.in); // Una única instancia de Scanner
+//
+//                    while (inicioFuncion3) {
+//                        System.out.println("Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.");
+//                        System.out.print("    Ingrese la fecha inicial (YYYY-MM-DD): ");
+//                        String fecha1 = scanner.nextLine();
+//                        System.out.print("    Ingrese la fecha final (YYYY-MM-DD): ");
+//                        String fecha2 = scanner.nextLine();
+//                        System.out.println("hola");
+//                        if (fechaValida(fecha1) && fechaValida(fecha2) && !isDate1AfterDate2(fecha1, fecha2)) {
+//                            System.out.println("hola1");
+//
+//                            app.consulta3(fecha1, fecha2);
+//                            inicioFuncion3 = false;
+//                        } else {
+//                            System.out.println("hola2");
+//                            boolean validez = false;
+//                            while (!validez) {
+//                                System.out.println();
+//                                System.out.println("Rango de fechas incorrecto, estas deben tener el formato (YYYY-MM-DD)");
+//                                System.out.println("En caso de querer volver al menú oprima 0. ");
+//                                System.out.print("    Ingrese un valor: ");
+//                                fecha1 = scanner.nextLine();
+//
+//                                if (fecha1.equals("0")) {
+//                                    inicioFuncion3 = false;
+//                                    validez = true;
+//                                } else {
+//                                    System.out.print("    Ingrese la fecha final (YYYY-MM-DD): ");
+//                                    fecha2 = scanner.nextLine();
+//                                    validez = (fechaValida(fecha1) && fechaValida(fecha2) && !isDate1AfterDate2(fecha1, fecha2));
+//                                    if (validez) {
+//                                        app.consulta3(fecha1, fecha2);
+//                                        inicioFuncion3 = false;
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
 
-                    break;
+
+                break;
 
 
                 case 4:
