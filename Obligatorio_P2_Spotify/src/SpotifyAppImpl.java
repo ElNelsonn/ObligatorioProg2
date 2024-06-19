@@ -59,6 +59,11 @@ public class SpotifyAppImpl {
 
 
     public void loadData() {
+
+        Runtime runtime1 = Runtime.getRuntime();
+        runtime1.gc();
+        long usedMemoryBefore1 = runtime1.totalMemory() - runtime1.freeMemory();
+
         System.out.println();
         System.out.println("Loading data, please wait...");
         System.out.println();
@@ -128,11 +133,21 @@ public class SpotifyAppImpl {
             throw new RuntimeException(e);
         }
 
+        long usedMemoryAfter1 = runtime1.totalMemory() - runtime1.freeMemory();
+        long memoryUsed1 = usedMemoryAfter1 - usedMemoryBefore1;
+        System.out.println("Memoria usada: " + memoryUsed1 + " bytes");
+
+
     }
 
 
     // Top 10 canciones en un país en un día dado.
     public void consulta1(String fechaRanking, String pais) {
+
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc();
+        long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
         String[] keySongs = new String[10];
         try {
             String[] ranking = this.dateCountryHash.get(fechaRanking).getRankingArray(pais);
@@ -157,9 +172,18 @@ public class SpotifyAppImpl {
             System.out.println();
             System.out.println("Ha ingresado una fecha o pais invalido.");
         }
+
+        long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+        long memoryUsed = usedMemoryAfter - usedMemoryBefore;
+        System.out.println("Memoria usada: " + memoryUsed + " bytes");
+
     }
 
     public void consulta2(String fechaDeConsulta) {
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc();
+        long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
         try {
             ClosedHashNode[] arrayPaises = this.dateCountryHash.get(fechaDeConsulta).getArray();
             int sizeArray = arrayPaises.length;
@@ -244,9 +268,19 @@ public class SpotifyAppImpl {
             System.out.println();
             System.out.println("No se ha encontrado la fecha en la base de datos");
         }
+
+        long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+        long memoryUsed = usedMemoryAfter - usedMemoryBefore;
+        System.out.println("Memoria usada: " + memoryUsed + " bytes");
     }
 
     public void consulta3(String fecha1, String fecha2) {
+
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc();
+        long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
+
         if(!isDateInRange(fecha1)&&(!isDateInRange(fecha2))){
             System.out.println();
             System.out.println("El rango de fechas seleccionado no es valido");
@@ -377,9 +411,18 @@ public class SpotifyAppImpl {
 
         } catch (ElementNotFound e) {
         }
+
+        long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+        long memoryUsed = usedMemoryAfter - usedMemoryBefore;
+        System.out.println("Memoria usada: " + memoryUsed + " bytes");
     }
 
     public void consulta4 (String fecha, String artista, String pais) {
+
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc();
+        long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
         try {
             String[] top50 = dateCountryHash.get(fecha).getRankingArray(pais);
 
@@ -400,7 +443,14 @@ public class SpotifyAppImpl {
             System.out.println();
             System.out.println("Pais o fecha invalida ");
         }
+
+        long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+        long memoryUsed = usedMemoryAfter - usedMemoryBefore;
+        System.out.println("Memoria usada: " + memoryUsed + " bytes");
+
     }
+
+
 
     private boolean verificoTempo(float temp1, float temp2, float temp3){
         return ((temp1>=temp2)&&(temp3>=temp1));
@@ -409,6 +459,12 @@ public class SpotifyAppImpl {
 
 
     public void consulta5(String fecha1, String fecha2, float temp1, float temp2){
+
+        Runtime runtime = Runtime.getRuntime();
+        runtime.gc();
+        long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
+        
         if(!isDateInRange(fecha1)&&(!isDateInRange(fecha2))){
             System.out.println();
             System.out.println("El rango de fechas seleccionado no es valido");
@@ -454,10 +510,18 @@ public class SpotifyAppImpl {
         }
         System.out.println();
         System.out.println("La cantidad de canciones para el rango de fechas y tempos dados es: " + cancionesTempo.getElementsIn());
+        System.out.println();
+
+
+        long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+        long memoryUsed = usedMemoryAfter - usedMemoryBefore;
+        System.out.println("Memoria usada: " + memoryUsed + " bytes");
+
+
+
+
     }
-
-
-
+    
 
 
 }

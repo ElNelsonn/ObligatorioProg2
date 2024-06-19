@@ -81,6 +81,12 @@ public class Menu {
 
                 // Top 10 canciones en un país en un día dado.
                 case 1:
+
+                    Runtime runtime = Runtime.getRuntime();
+                    runtime.gc();
+                    long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
+
+
                     boolean inicioFuncion1 = true;
                     while (inicioFuncion1) {
                         Scanner scanner2 = new Scanner(System.in);
@@ -119,6 +125,13 @@ public class Menu {
                             }
                         }
                     }
+
+                    long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
+                    long memoryUsed = usedMemoryAfter - usedMemoryBefore;
+                    System.out.println("Memoria usada: " + memoryUsed + " bytes");
+
+
+
                     break;
 
                 //Top 5 canciones que aparecen en más top 50 en un día dado.
@@ -351,8 +364,8 @@ public class Menu {
                             }
                         }
                     }
-
                     break;
+
 
                 case 6:
                     this.prendido = false;
