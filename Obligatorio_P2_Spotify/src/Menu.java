@@ -20,6 +20,14 @@ public class Menu {
         }
     }
 
+    private float temposValidos(String temp1){
+        try {
+            return Float.parseFloat(temp1);
+        } catch (NumberFormatException e) {
+            return -1;
+        }
+    }
+
     private boolean isDate1AfterDate2(String date1, String date2) {
         try {
             LocalDate d1 = LocalDate.parse(date1);
@@ -83,7 +91,7 @@ public class Menu {
                         if (fechaValida(fecha)) {
                             System.out.print("    Ingrese el pais: ");
                             String pais = scanner2.nextLine();
-                            app.consulta1(fecha,pais);
+                            app.consulta1(fecha, pais);
                             inicioFuncion1 = false;
 
                         } else {
@@ -104,7 +112,7 @@ public class Menu {
                                     if (validez) {
                                         System.out.print("  Ingrese el pais: ");
                                         String pais = scanner2.nextLine();
-                                        app.consulta1(fecha1,pais);
+                                        app.consulta1(fecha1, pais);
                                         inicioFuncion1 = false;
                                     }
                                 }
@@ -145,7 +153,6 @@ public class Menu {
                                 } else {
                                     validez = fechaValida(fecha1);
                                     if (validez) {
-
                                         app.consulta2(fecha1);
                                         inicioFuncion2 = false;
                                     }
@@ -167,8 +174,12 @@ public class Menu {
                         Scanner scanner5 = new Scanner(System.in);
                         String fecha2 = scanner5.nextLine();
 
-                        if (fechaValida(fecha1) && fechaValida(fecha2) && isDate1AfterDate2(fecha1, fecha2)) {
-                            app.consulta3(fecha1,fecha2);
+                        if (fechaValida(fecha1) && fechaValida(fecha2) && fecha1.equals(fecha2)) {
+                            app.consulta3(fecha1, fecha2);
+                            inicioFuncion3 = false;
+
+                        } else if (fechaValida(fecha1) && fechaValida(fecha2) && isDate1AfterDate2(fecha1, fecha2)) {
+                            app.consulta3(fecha1, fecha2);
                             inicioFuncion3 = false;
                         } else {
                             boolean validez = false;
@@ -186,81 +197,171 @@ public class Menu {
                                 } else {
                                     System.out.print("    Ingrese la fecha final (YYYY-MM-DD): ");
                                     fecha2 = scanner4.nextLine();
-                                    app.consulta3(fecha1,fecha2);
                                     validez = (fechaValida(fecha1) && fechaValida(fecha2) && isDate1AfterDate2(fecha1, fecha2));
                                     if (validez) {
-
+                                        app.consulta3(fecha1, fecha2);
                                         inicioFuncion3 = false;
+                                        validez = true;
+                                    } else if (fechaValida(fecha1) && fechaValida(fecha2) && fecha1.equals(fecha2)) {
+                                        app.consulta3(fecha1, fecha2);
+                                        inicioFuncion3 = false;
+                                        validez = true;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+
+                case 4:
+                    boolean inicioFuncion4 = true;
+                    while (inicioFuncion4) {
+                        Scanner scanner8 = new Scanner(System.in);
+                        System.out.println("Cantidad de veces que aparece un artista específico en un top 50 en una fecha dada: ");
+                        System.out.print("    Ingrese la fecha del ranking (YYYY-MM-DD): ");
+                        String fecha = scanner8.nextLine();
+
+                        if (fechaValida(fecha)) {
+                            System.out.print("    Ingrese el pais: ");
+                            String pais = scanner8.nextLine();
+                            System.out.print("    Ingrese el artista: ");
+                            String artista = scanner8.nextLine();
+                            app.consulta4(fecha, artista, pais);
+                            inicioFuncion4 = false;
+                        } else {
+                            boolean validez = fechaValida(fecha);
+                            while (!validez) {
+                                System.out.println();
+                                System.out.println("Fecha incorrecta, esta debe de tener el formato (YYYY-MM-DD)");
+                                System.out.print("En caso de querer volver al menu oprima 0. ");
+                                System.out.print("Ingrese un valor: ");
+                                String fecha1 = scanner8.nextLine();
+
+                                if (fecha1.equals("0")) {
+                                    inicioFuncion4 = false;
+                                    validez = true;
+
+                                } else {
+                                    validez = fechaValida(fecha1);
+                                    if (validez) {
+                                        System.out.print("  Ingrese el pais: ");
+                                        String pais1 = scanner8.nextLine();
+                                        System.out.println("    Ingrese el artista: ");
+                                        String artista1 = scanner8.nextLine();
+                                        app.consulta4(fecha1, artista1, pais1);
+                                        inicioFuncion4 = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
+
+                case 5:
+                    boolean inicioFuncion5 = true;
+                    while (inicioFuncion5) {
+                        Scanner scanner9 = new Scanner(System.in);
+                        System.out.println("Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.");
+                        System.out.print("    Ingrese la fecha inicial (YYYY-MM-DD): ");
+                        String fecha1 = scanner9.nextLine();
+                        System.out.print("    Ingrese la fecha final (YYYY-MM-DD): ");
+                        Scanner scanner10 = new Scanner(System.in);
+                        String fecha2 = scanner9.nextLine();
+
+                        if (fechaValida(fecha1) && fechaValida(fecha2) && fecha1.equals(fecha2)) {
+                            System.out.print("    Ingrese el tempo inicial: ");
+                            String temp1 = scanner10.nextLine();
+                            if (temposValidos(temp1) != -1){
+                                System.out.print("    Ingrese el tempo final: ");
+                                String temp2 = scanner10.nextLine();
+                                if(temposValidos(temp2) != -1){
+                                    app.consulta5(fecha1, fecha2, temposValidos(temp1), temposValidos(temp2));
+                                    inicioFuncion5 = false;
+                                } else {
+                                    System.out.println("    Tempos invalidos ");
+                                    inicioFuncion5 = false;
+                                }
+                            }
+                        } else if (fechaValida(fecha1) && fechaValida(fecha2) && isDate1AfterDate2(fecha1, fecha2)) {
+                            System.out.print("    Ingrese el tempo inicial: ");
+                            String temp1 = scanner9.nextLine();
+                            if (temposValidos(temp1) != -1){
+
+                                System.out.print("    Ingrese el tempo final: ");
+                                String temp2 = scanner9.nextLine();
+                                if(temposValidos(temp2) != -1){
+                                    app.consulta5(fecha1, fecha2, temposValidos(temp1), temposValidos(temp2));
+                                    inicioFuncion5 = false;
+                                } else {
+                                    System.out.println("    Tempos invalidos ");
+                                    inicioFuncion5 = false;
+                                }
+                            }
+                        } else {
+                            boolean validez = false;
+                            while (!validez) {
+                                System.out.println();
+                                System.out.println("Rango de fechas incorrecto, estas deben tener el formato (YYYY-MM-DD)");
+                                System.out.println("En caso de querer volver al menu oprima 0. ");
+                                System.out.print("    Ingrese fecha inicial nuevamente (YYYY-MM-DD): ");
+                                fecha1 = scanner9.nextLine();
+
+                                if (fecha1.equals("0")) {
+                                    inicioFuncion5 = false;
+                                    validez = true;
+
+                                } else {
+                                    System.out.print("    Ingrese la fecha final (YYYY-MM-DD): ");
+                                    fecha2 = scanner9.nextLine();
+                                    validez = (fechaValida(fecha1) && fechaValida(fecha2) && isDate1AfterDate2(fecha1, fecha2));
+                                    if (validez) {
+                                        System.out.print("    Ingrese el tempo inicial: ");
+                                        String temp1 = scanner9.nextLine();
+                                        if (temposValidos(temp1) != -1){
+                                            System.out.print("    Ingrese el tempo final: ");
+                                            String temp2 = scanner9.nextLine();
+                                            if(temposValidos(temp2) != -1){
+                                                app.consulta5(fecha1, fecha2, temposValidos(temp1), temposValidos(temp2));
+                                                validez = true;
+                                                inicioFuncion5 = false;
+                                            } else {
+                                                System.out.println("    Tempos invalidos ");
+                                                inicioFuncion5 = false;
+                                            }
+                                        }
+
+                                    } else if (fechaValida(fecha1) && fechaValida(fecha2) && fecha1.equals(fecha2)) {
+                                        System.out.print("    Ingrese el tempo inicial: ");
+                                        String temp1 = scanner9.nextLine();
+                                        if (temposValidos(temp1) != -1){
+                                            System.out.print("    Ingrese el tempo final: ");
+                                            String temp2 = scanner9.nextLine();
+                                            if(temposValidos(temp2) != -1){
+                                                app.consulta5(fecha1, fecha2, temposValidos(temp1), temposValidos(temp2));
+                                                inicioFuncion5 = false;
+                                                validez = true;
+                                            } else {
+                                                System.out.println("    Tempos invalidos ");
+                                                inicioFuncion5 = false;
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
 
-//
-//                    boolean inicioFuncion3 = true;
-//                    Scanner scanner = new Scanner(System.in); // Una única instancia de Scanner
-//
-//                    while (inicioFuncion3) {
-//                        System.out.println("Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.");
-//                        System.out.print("    Ingrese la fecha inicial (YYYY-MM-DD): ");
-//                        String fecha1 = scanner.nextLine();
-//                        System.out.print("    Ingrese la fecha final (YYYY-MM-DD): ");
-//                        String fecha2 = scanner.nextLine();
-//                        System.out.println("hola");
-//                        if (fechaValida(fecha1) && fechaValida(fecha2) && !isDate1AfterDate2(fecha1, fecha2)) {
-//                            System.out.println("hola1");
-//
-//                            app.consulta3(fecha1, fecha2);
-//                            inicioFuncion3 = false;
-//                        } else {
-//                            System.out.println("hola2");
-//                            boolean validez = false;
-//                            while (!validez) {
-//                                System.out.println();
-//                                System.out.println("Rango de fechas incorrecto, estas deben tener el formato (YYYY-MM-DD)");
-//                                System.out.println("En caso de querer volver al menú oprima 0. ");
-//                                System.out.print("    Ingrese un valor: ");
-//                                fecha1 = scanner.nextLine();
-//
-//                                if (fecha1.equals("0")) {
-//                                    inicioFuncion3 = false;
-//                                    validez = true;
-//                                } else {
-//                                    System.out.print("    Ingrese la fecha final (YYYY-MM-DD): ");
-//                                    fecha2 = scanner.nextLine();
-//                                    validez = (fechaValida(fecha1) && fechaValida(fecha2) && !isDate1AfterDate2(fecha1, fecha2));
-//                                    if (validez) {
-//                                        app.consulta3(fecha1, fecha2);
-//                                        inicioFuncion3 = false;
-//                                    }
-//                                }
-//                            }
-//                        }
-//                    }
-
-
-                break;
-
-
-                case 4:
-
-
                     break;
 
-                case 5:
-
-                    break;
                 case 6:
-
+                    this.prendido = false;
 
                     break;
+
                 default:
                     System.out.println("Opcion no valida, ingrese un numero del 1 al 6: ");
             }
-
-
-
         }
         scanner1.close();
     }

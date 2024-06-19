@@ -3,6 +3,8 @@ import ADTs.src.uy.edu.um.prog2.adt.ClosedHashTable.MyClosedHashTable;
 import ADTs.src.uy.edu.um.prog2.adt.ClosedHashTable.MyClosedHashTableImpl;
 import ADTs.src.uy.edu.um.prog2.adt.HashTable.MyHashTable;
 import ADTs.src.uy.edu.um.prog2.adt.HashTable.MyHashTableImpl;
+import ADTs.src.uy.edu.um.prog2.adt.List.MyList;
+import ADTs.src.uy.edu.um.prog2.adt.List.MyListImpl;
 import ADTs.src.uy.edu.um.prog2.adt.exceptions.ElementAlreadyInHash;
 import ADTs.src.uy.edu.um.prog2.adt.exceptions.ElementNotFound;
 
@@ -11,10 +13,12 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.security.spec.RSAOtherPrimeInfo;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.Scanner;
 
 public class SpotifyAppImpl {
@@ -34,6 +38,25 @@ public class SpotifyAppImpl {
         LocalDate nuevaFecha = date1.plusDays(1);
         return nuevaFecha.format(formatter);
     }
+
+    public boolean isDateInRange(String dateStr) {
+        String startStr = "2023-10-18";
+        String endStr = "2024-05-13";
+        String format = "yyyy-MM-dd";
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat(format);
+        try {
+            Date date = dateFormat.parse(dateStr);
+            Date startDate = dateFormat.parse(startStr);
+            Date endDate = dateFormat.parse(endStr);
+
+            return date.compareTo(startDate) >= 0 && date.compareTo(endDate) <= 0;
+        } catch (ParseException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
 
     public void loadData() {
         System.out.println();
@@ -60,8 +83,7 @@ public class SpotifyAppImpl {
                     String songKey = data[0];
                     data[0] = songKey.substring(1);
                     String[] artists = data[2].split(", ");
-                    data[23] = data[23].replace(".", "");
-                    int tempo = Integer.parseInt(data[23]);
+                    float tempo = Float.parseFloat(data[23]);
                     Song newSong = new Song(data[1], data[0], artists, tempo);
 
                     // Inserto artistas --------------------------------
@@ -219,50 +241,58 @@ public class SpotifyAppImpl {
             System.out.println();
 
         } catch (ElementNotFound e) {
+            System.out.println();
+            System.out.println("No se ha encontrado la fecha en la base de datos");
         }
     }
 
     public void consulta3(String fecha1, String fecha2) {
+        if(!isDateInRange(fecha1)&&(!isDateInRange(fecha2))){
+            System.out.println();
+            System.out.println("El rango de fechas seleccionado no es valido");
+            return;
+        }
         try {
-            System.out.println("ello");
             String fechaTemp = fecha1;
             ClosedHashNode[] arrayPaises;
             boolean tempBoolean = false;
+            if (fecha1.equals(fecha2)){
+                tempBoolean = true;
+            }
             while (!(fechaTemp.equals(fecha2)) || (tempBoolean)) {
+                try {
+                    arrayPaises = this.dateCountryHash.get(fechaTemp).getArray();
+                    int sizeArray = arrayPaises.length;
 
-                arrayPaises = this.dateCountryHash.get(fechaTemp).getArray();
-                int sizeArray = arrayPaises.length;
-
-                String idSong;
-                String[] artists;
-                for (int i = 0; i < sizeArray; i++) {
-                    if (!(arrayPaises[i] == null)) {
-                        for (int j = 0; j < 50; j++) {
-                            idSong = arrayPaises[i].getInnerArray()[j];
-                            if (!(idSong == null)) {
-                                artists = this.songsHash.get(idSong).getArtists();
-                                for (int k = 0; k < artists.length; k++) {
-                                    if(artists[k]!=null) {
-                                        int newValuee = this.artistHash.get(artists[k]);
-                                        newValuee++;
-                                        this.artistHash.setValue(artists[k], newValuee);
+                    String idSong;
+                    String[] artists;
+                    for (int i = 0; i < sizeArray; i++) {
+                        if (!(arrayPaises[i] == null)) {
+                            for (int j = 0; j < 50; j++) {
+                                idSong = arrayPaises[i].getInnerArray()[j];
+                                if (!(idSong == null)) {
+                                    artists = this.songsHash.get(idSong).getArtists();
+                                    for (int k = 0; k < artists.length; k++) {
+                                        if (artists[k] != null) {
+                                            int newValuee = this.artistHash.get(artists[k]);
+                                            newValuee++;
+                                            this.artistHash.setValue(artists[k], newValuee);
+                                        }
                                     }
                                 }
                             }
                         }
                     }
+                    if (tempBoolean) {
+                        break;
+                    } else if (fechaTemp.equals(fecha2)) {
+                        tempBoolean = true;
+                    }
+                }catch (ElementNotFound ignore){
+                    //System.out.println(fechaTemp);
                 }
                 fechaTemp = this.nextDateString(fechaTemp);
-
-                if (tempBoolean) {
-                    break;
-                }
-                else if (fechaTemp.equals(fecha2)) {
-                    tempBoolean = true;
-                }
             }
-            System.out.println("hello");
-
             String[] top7Artist = new String[7];
             int sizeSongs = this.artistHash.getArray().length;
 
@@ -309,25 +339,34 @@ public class SpotifyAppImpl {
                 }
             }
 
-            Arrays.sort(top7Artist);
+            int[] aparicionesCant = new int[7];
+            for(int i = 0; i < 7; i++){
+                aparicionesCant[i] = artistHash.get(top7Artist[i]);
+            }
+            Arrays.sort(aparicionesCant);
+            String[] artistasOrdenados = new String[7];
+            for(int j = 0; j < 7; j++) {
+                for(int k = 0; k < 7; k++){
+                    if(artistHash.get(top7Artist[k]) == aparicionesCant[j]){
+                        artistasOrdenados[j] = top7Artist[k];
+                    }
+                }
+            }
             System.out.println();
             System.out.println("Top 7 artistas con mas apariciones en " + fecha1 + " - " + fecha2 + ":");
             System.out.println();
             for (int i = 6; i >= 0; i--) {
-                String artist = top7Artist[i];
+                String artist = artistasOrdenados[i];
                 System.out.println("    " + (7 - i) + ") " + "Artist name: " + artist);
                 System.out.println("       Apariciones: " + artistHash.get(artist));
                 System.out.println();
             }
-            System.out.println(artistHash.get("Feid"));
 
             for (int i = 0; i < artistHash.getArray().length; i++) {
                 if (!(this.artistHash.getArray()[i] == null)) {
                     this.artistHash.getArray()[i].setValue(0);
                 }
             }
-            System.out.println(artistHash.get("Feid"));
-
 
             Scanner temp = new Scanner(System.in);
             System.out.print("Para volver al menu ingrese cualquier valor: ");
@@ -337,33 +376,88 @@ public class SpotifyAppImpl {
             System.out.println();
 
         } catch (ElementNotFound e) {
-            System.out.println("bye");
         }
+    }
+
+    public void consulta4 (String fecha, String artista, String pais) {
+        try {
+            String[] top50 = dateCountryHash.get(fecha).getRankingArray(pais);
+
+            String[] arrayArtistas;
+            int counter = 0;
+            for(int i = 0; i < 50; i++) {
+                if (top50[i] != null) {
+                    arrayArtistas = this.songsHash.get(top50[i]).getArtists();
+                    for (int j = 0; j < arrayArtistas.length; j++) {
+                        if (arrayArtistas[j].equals(artista)) {
+                            counter++;
+                        }
+                    }
+                }
+            }
+            System.out.println("El artista " + artista + " aparece " + counter + " veces en el top 50 de " + pais + " en " + fecha + ".");
+        }catch (ElementNotFound e){
+            System.out.println();
+            System.out.println("Pais o fecha invalida ");
+        }
+    }
+
+    private boolean verificoTempo(float temp1, float temp2, float temp3){
+        return ((temp1>=temp2)&&(temp3>=temp1));
+
+    }
+
+
+    public void consulta5(String fecha1, String fecha2, float temp1, float temp2){
+        if(!isDateInRange(fecha1)&&(!isDateInRange(fecha2))){
+            System.out.println();
+            System.out.println("El rango de fechas seleccionado no es valido");
+            return;
+        }
+
+        String fechaTemp = fecha1;
+        ClosedHashNode[] arrayPaises;
+        boolean tempBoolean = false;
+        if (fecha1.equals(fecha2)) {
+            tempBoolean = true;
+        }
+        int counter = 0;
+        MyHashTable<String,String> cancionesTempo = new MyHashTableImpl<>(14000);
+        while (!(fechaTemp.equals(fecha2)) || (tempBoolean)) {
+            try {
+                arrayPaises = this.dateCountryHash.get(fechaTemp).getArray();
+                int sizeArray = arrayPaises.length;
+
+                String idSong;
+                for (int i = 0; i < sizeArray; i++) {
+                    if (!(arrayPaises[i] == null)) {
+                        for (int j = 0; j < 50; j++) {
+                            idSong = arrayPaises[i].getInnerArray()[j];
+                            if (!(idSong == null)) {
+                                float tempSong = songsHash.get(idSong).getTempo();
+                                if (verificoTempo(tempSong,temp1,temp2)) {
+                                    try {
+                                        cancionesTempo.put(idSong,idSong);
+                                    } catch (ElementAlreadyInHash ignore){ }
+                                }
+                            }
+                        }
+                    }
+                }
+                if (tempBoolean) {
+                    break;
+                } else if (fechaTemp.equals(fecha2)) {
+                    tempBoolean = true;
+                }
+            } catch (ElementNotFound ignore) { }
+            fechaTemp = this.nextDateString(fechaTemp);
+        }
+        System.out.println();
+        System.out.println("La cantidad de canciones para el rango de fechas y tempos dados es: " + cancionesTempo.getElementsIn());
     }
 
 
 
-
-
-//    public void infoErroneaTomeUnaDecsion() {
-//        Scanner scanner1 = new Scanner(System.in);
-//        String opcion = scanner1.nextLine();
-//
-//        switch (opcion) {
-//            case 1:
-//                System.out.println("Has elegido la opción 1");
-//                // Lógica para la opción 1
-//                break;
-//            case 2:
-//                System.out.println("Has elegido la opción 2");
-//                // Lógica para la opción 2
-//                break;
-//            case 3:
-//
-//        }
-//
-//
-//    }
 
 
 }

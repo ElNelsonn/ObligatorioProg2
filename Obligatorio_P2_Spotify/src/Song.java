@@ -4,11 +4,11 @@ public class Song implements Comparable<Song> {
     private String name;
     private String spotifyId;
     private String[] artists;
-    private int tempo;
+    private float tempo;
     private int temp_counter = 0;
 
 
-    public Song(String name, String spotifyId, String[] artists, int tempo) {
+    public Song(String name, String spotifyId, String[] artists, float tempo) {
         this.name = name;
         this.spotifyId = spotifyId;
         this.artists = artists;
@@ -62,7 +62,7 @@ public class Song implements Comparable<Song> {
         this.artists = artists;
     }
 
-    public int getTempo() {
+    public float getTempo() {
         return tempo;
     }
 

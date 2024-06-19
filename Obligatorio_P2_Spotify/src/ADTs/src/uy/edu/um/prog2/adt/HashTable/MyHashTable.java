@@ -17,4 +17,6 @@ public interface MyHashTable<K,V> {
 
     void setValue(K nombre, V value);
 
+    int getElementsIn();
+
 }
