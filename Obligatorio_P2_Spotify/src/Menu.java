@@ -60,7 +60,7 @@ public class Menu {
         return scanner.nextLine();
     }
 
-    private void handleConsulta1(SpotifyAppImpl app) {
+    private void pedirDatos1(SpotifyAppImpl app) {
         System.out.println();
         System.out.println("Top 10 canciones en un país en un día dado.");
         String fecha = promptForDate("Ingrese la fecha del ranking (YYYY-MM-DD): ");
@@ -70,7 +70,7 @@ public class Menu {
         }
     }
 
-    private void handleConsulta2(SpotifyAppImpl app) {
+    private void pedirDatos2(SpotifyAppImpl app) {
         System.out.println();
         System.out.println("Top 5 canciones que aparecen en más top 50 en un día dado.");
         String fecha = promptForDate("Ingrese la fecha del ranking (YYYY-MM-DD): ");
@@ -79,7 +79,7 @@ public class Menu {
         }
     }
 
-    private void handleConsulta3(SpotifyAppImpl app) {
+    private void pedirDatos3(SpotifyAppImpl app) {
         System.out.println();
         System.out.println("Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.");
         String fechaInicial = promptForDate("Ingrese la fecha inicial (YYYY-MM-DD): ");
@@ -92,7 +92,7 @@ public class Menu {
         }
     }
 
-    private void handleConsulta4(SpotifyAppImpl app) {
+    private void pedirDatos4(SpotifyAppImpl app) {
         System.out.println();
         System.out.println("Cantidad de veces que aparece un artista específico en un top 50 en una fecha dada.");
         String fecha = promptForDate("Ingrese la fecha del ranking (YYYY-MM-DD): ");
@@ -103,7 +103,7 @@ public class Menu {
         }
     }
 
-    private void handleConsulta5(SpotifyAppImpl app) {
+    private void pedirDatos5(SpotifyAppImpl app) {
         System.out.println();
         System.out.println("Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.");
         String fechaInicial = promptForDate("Ingrese la fecha inicial (YYYY-MM-DD): ");
@@ -160,19 +160,19 @@ public class Menu {
 
             switch (opcion) {
                 case 1:
-                    handleConsulta1(app);
+                    pedirDatos1(app);
                     break;
                 case 2:
-                    handleConsulta2(app);
+                    pedirDatos2(app);
                     break;
                 case 3:
-                    handleConsulta3(app);
+                    pedirDatos3(app);
                     break;
                 case 4:
-                    handleConsulta4(app);
+                    pedirDatos4(app);
                     break;
                 case 5:
-                    handleConsulta5(app);
+                    pedirDatos5(app);
                     break;
                 case 6:
                     System.out.println();

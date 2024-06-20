@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.Scanner;
 
-public class SpotifyAppImpl {
+public class SpotifyAppImpl implements SpotifyApp {
     private MyHashTable<String, Song> songsHash;
     private MyHashTable<String, MyClosedHashTable> dateCountryHash;
     private MyHashTable<String, Integer> artistHash;
@@ -61,11 +61,8 @@ public class SpotifyAppImpl {
         System.out.println();
         System.out.println("Loading data, please wait...");
         System.out.println();
-        //"C:/Users/Joaco/Desktop/universal_top_spotify_songs33.csv"
-        //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"
-        //"C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"
         try {
-            Scanner scanner = new Scanner(new File("C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"));
+            Scanner scanner = new Scanner(new File("../ObligatorioProg2/universal_top_spotify_songs.csv"));
             scanner.useDelimiter("\n");
 
             boolean test = false;
