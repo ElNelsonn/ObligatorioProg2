@@ -3,16 +3,11 @@ import ADTs.src.uy.edu.um.prog2.adt.ClosedHashTable.MyClosedHashTable;
 import ADTs.src.uy.edu.um.prog2.adt.ClosedHashTable.MyClosedHashTableImpl;
 import ADTs.src.uy.edu.um.prog2.adt.HashTable.MyHashTable;
 import ADTs.src.uy.edu.um.prog2.adt.HashTable.MyHashTableImpl;
-import ADTs.src.uy.edu.um.prog2.adt.List.MyList;
-import ADTs.src.uy.edu.um.prog2.adt.List.MyListImpl;
 import ADTs.src.uy.edu.um.prog2.adt.exceptions.ElementAlreadyInHash;
 import ADTs.src.uy.edu.um.prog2.adt.exceptions.ElementNotFound;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.security.spec.RSAOtherPrimeInfo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -57,7 +52,6 @@ public class SpotifyAppImpl {
         }
     }
 
-
     public void loadData() {
 
         Runtime runtime1 = Runtime.getRuntime();
@@ -71,7 +65,7 @@ public class SpotifyAppImpl {
         //"C:/Users/Joaco/Desktop/CSV_labP2/universal_top_spotify_songs.csv"
         //"C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"
         try {
-            Scanner scanner = new Scanner(new File("C:/Users/Joaco/Desktop/universal_top_spotify_songs33.csv"));
+            Scanner scanner = new Scanner(new File("C:/Users/santb/OneDrive - Universidad de Montevideo/Escritorio/universal_top_spotify_songs.csv"));
             scanner.useDelimiter("\n");
 
             boolean test = false;
@@ -140,7 +134,6 @@ public class SpotifyAppImpl {
 
     }
 
-
     // Top 10 canciones en un país en un día dado.
     public void consulta1(String fechaRanking, String pais) {
 
@@ -179,7 +172,9 @@ public class SpotifyAppImpl {
 
     }
 
+    // Top 5 canciones que aparecen en más top 50 en un día dado.
     public void consulta2(String fechaDeConsulta) {
+
         Runtime runtime = Runtime.getRuntime();
         runtime.gc();
         long usedMemoryBefore = runtime.totalMemory() - runtime.freeMemory();
@@ -272,8 +267,10 @@ public class SpotifyAppImpl {
         long usedMemoryAfter = runtime.totalMemory() - runtime.freeMemory();
         long memoryUsed = usedMemoryAfter - usedMemoryBefore;
         System.out.println("Memoria usada: " + memoryUsed + " bytes");
+
     }
 
+    // Top 7 artistas que más aparecen en los top 50 para un rango de fechas dado.
     public void consulta3(String fecha1, String fecha2) {
 
         Runtime runtime = Runtime.getRuntime();
@@ -417,7 +414,8 @@ public class SpotifyAppImpl {
         System.out.println("Memoria usada: " + memoryUsed + " bytes");
     }
 
-    public void consulta4 (String fecha, String artista, String pais) {
+    // Cantidad de veces que aparece un artista específico en un top 50 en una fecha dada.
+    public void consulta4(String fecha, String artista, String pais) {
 
         Runtime runtime = Runtime.getRuntime();
         runtime.gc();
@@ -425,9 +423,9 @@ public class SpotifyAppImpl {
 
         try {
             String[] top50 = dateCountryHash.get(fecha).getRankingArray(pais);
-
             String[] arrayArtistas;
             int counter = 0;
+
             for(int i = 0; i < 50; i++) {
                 if (top50[i] != null) {
                     arrayArtistas = this.songsHash.get(top50[i]).getArtists();
@@ -450,14 +448,11 @@ public class SpotifyAppImpl {
 
     }
 
-
-
     private boolean verificoTempo(float temp1, float temp2, float temp3){
         return ((temp1>=temp2)&&(temp3>=temp1));
-
     }
 
-
+    // Cantidad de canciones con un tempo en un rango específico para un rango específico de fechas.
     public void consulta5(String fecha1, String fecha2, float temp1, float temp2){
 
         Runtime runtime = Runtime.getRuntime();
@@ -517,11 +512,5 @@ public class SpotifyAppImpl {
         long memoryUsed = usedMemoryAfter - usedMemoryBefore;
         System.out.println("Memoria usada: " + memoryUsed + " bytes");
 
-
-
-
     }
-    
-
-
 }
